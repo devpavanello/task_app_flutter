@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo_app/pages/home/home_page.dart';
+import 'package:todo_app/provider/task_group_provider.dart';
+import 'package:todo_app/provider/task_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
-    url: 'https://urquozkidpmjddmmrcay.supabase.co',
+    url: 'https://pclxmgtpkfoibmegugtd.supabase.co',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVycXVvemtpZHBtamRkbW1yY2F5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgzODg5NTEsImV4cCI6MjA0Mzk2NDk1MX0.CiGaVjHV_1bY9K2i1EzJ7UqJ5M8sQ93bmyPPs0nN8dc',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjbHhtZ3Rwa2ZvaWJtZWd1Z3RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcxMDM2NjUsImV4cCI6MjA0MjY3OTY2NX0.cxtdnGrNS8ve89F3ZL60VV5CvvA9WrV6piRfuaOUIcU',
   );
 
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => TaskGroupProvider()..listTaskGroups(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => TaskProvider(),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
